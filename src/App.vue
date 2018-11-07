@@ -1,25 +1,37 @@
 <template>
-  <v-app>
-    <Sidebar />
-
-    <v-toolbar app clipped-right dark>
-      <v-toolbar-side-icon left></v-toolbar-side-icon>
-      <v-toolbar-title>UIAI2018</v-toolbar-title>
-    </v-toolbar>
-
-    <v-content>
-      <router-view />
-    </v-content>
-  </v-app>
+  <router-view />
 </template>
 
 <script>
-import Sidebar from './components/Sidebar'
+import axios from "axios";
 
 export default {
-  name: 'App',
-  components: {
-    Sidebar
+  name: "App",
+  mounted() {
+    // Check if the token exists
+    // If valid store accessToken
+    // if !valid use refreshToken
+    // if !valid force login
+    const accToken = localStorage.getItem("access");
+
+    if (accToken) {
+      axios
+        .post(`${process.env.VUE_APP_ROOT_API}/token/verify/`, {
+          token: accToken
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.$store.commit("SET_ACCESS_TOKEN", accToken);
+            this.$store.commit("SET_IS_LOGGED_IN", true);
+            this.$router.push({ name: "teamManagement" });
+          }
+        })
+        // TODO: Proper error handling
+        // eslint-disable-next-line
+        .catch(error => {
+          if (error.response) console.log(error.response.data);
+        });
+    }
   }
-}
+};
 </script>
