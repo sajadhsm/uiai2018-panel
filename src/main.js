@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import './stylus/main.styl'
 
 axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
 
