@@ -21,7 +21,7 @@ export default new Vuex.Store({
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`${process.env.VUE_APP_ROOT_API}/token/`, payload)
+          .post('/token/', payload)
           .then(res => {
             if (res.status === 200) {
               context.commit('SET_ACCESS_TOKEN', res.data.access);

@@ -16,7 +16,7 @@ export default {
 
     if (accToken) {
       axios
-        .post(`${process.env.VUE_APP_ROOT_API}/token/verify/`, {
+        .post("/token/verify/", {
           token: accToken
         })
         .then(res => {
