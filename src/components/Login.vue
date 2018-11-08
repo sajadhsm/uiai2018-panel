@@ -37,13 +37,22 @@
           </v-card>
         </v-flex>
       </v-layout>
+      <v-snackbar
+        v-model="snackbar"
+        bottom
+        left
+        :color="snackbarColor"
+      >
+        {{ snackbarText }}
+        <v-btn class="snackbarBtn" right icon @click="snackbar = false">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-snackbar>
     </v-container>
   </v-content>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data: () => ({
     valid: true,
@@ -53,7 +62,10 @@ export default {
       v => /.+@.+/.test(v) || "ایمیل معتبر نیست"
     ],
     password: "",
-    passwordRules: [v => !!v || "رمزعبور الزامی است"]
+    passwordRules: [v => !!v || "رمزعبور الزامی است"],
+    snackbar: false,
+    snackbarText: "",
+    snackbarColor: ""
   }),
   methods: {
     submit() {
@@ -64,9 +76,23 @@ export default {
             password: this.password
           })
           .then(() => this.$router.push({ name: "teamManagement" }))
-          .catch(err => {console.log(err)});
+          .catch(error => {
+            if (error.non_field_errors) {
+              this.snackbar = true;
+              this.snackbarColor = "error";
+              this.snackbarText = error.non_field_errors[0];
+              this.$refs.form.reset();
+            }
+          });
       }
     }
   }
 };
 </script>
+
+<style scoped>
+.snackbarBtn {
+  /* Fix large left margin in RTL */
+  margin-left: 0 !important;
+}
+</style>
