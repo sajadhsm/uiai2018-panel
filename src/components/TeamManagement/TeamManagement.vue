@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <CreateTeamFormCard />
+    <CreateTeamFormCard class="mb-4" />
+    <SentInvitationsTable />
   </v-container>
 </template>
 
@@ -9,10 +10,12 @@ import axios from "axios";
 import { mapState } from "vuex";
 
 import CreateTeamFormCard from "./CreateTeamFormCard";
+import SentInvitationsTable from "./SentInvitationsTable";
 
 export default {
   components: {
-    CreateTeamFormCard
+    CreateTeamFormCard,
+    SentInvitationsTable
   },
 };
 </script>
