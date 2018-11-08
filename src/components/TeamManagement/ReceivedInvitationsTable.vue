@@ -18,24 +18,30 @@
             </v-chip>
           </td>
           <td class="justify-center layout px-0">
-            <v-tooltip right>
+            <v-tooltip
+              right
+              :disabled="disableNotPendings(props.item.status)">
               <v-btn
                 slot="activator"
                 flat
                 icon
                 color="green"
+                :disabled="disableNotPendings(props.item.status)"
                 @click="acceptInvitation(props.item)">
                 <v-icon>check</v-icon>
               </v-btn>
               <span>پذیرش</span>
             </v-tooltip>
 
-            <v-tooltip left>
+            <v-tooltip
+              left
+              :disabled="disableNotPendings(props.item.status)">
               <v-btn
                 slot="activator"
                 flat
                 icon
                 color="red"
+                :disabled="disableNotPendings(props.item.status)"
                 @click="rejectInvitation(props.item)">
                 <v-icon>close</v-icon>
               </v-btn>
@@ -130,13 +136,16 @@ export default {
         });
     },
     statusColor(statusText) {
-      if (statusText === 'پذیرفته شده') {
-        return "green"
-      } else if (statusText === 'رد شده') {
-        return "red"
+      if (statusText === "پذیرفته شده") {
+        return "green";
+      } else if (statusText === "رد شده") {
+        return "red";
       } else {
-        return "orange"
+        return "orange";
       }
+    },
+    disableNotPendings(statusText) {
+      return /رد شده|پذیرفته شده/.test(statusText) ? true : false;
     }
   }
 };
