@@ -98,7 +98,10 @@ export default {
           }
         )
         .then(res => {
-          this.$store.commit("SET_HAS_TEAM", true);
+          // JIT update other components
+          this.$store.dispatch("getUserInfo");
+          this.$store.dispatch("getTeamInfo");
+
           this.snackbar = true;
           this.snackbarColor = "success";
           this.snackbarText = res.data.message;
@@ -123,6 +126,9 @@ export default {
           }
         )
         .then(res => {
+          // JIT update other components
+          this.$store.dispatch("getUserInfo");
+
           this.snackbar = true;
           this.snackbarColor = "info";
           this.snackbarText = res.data.message;
