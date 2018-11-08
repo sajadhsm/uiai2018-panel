@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex>
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark flat color="primary">
           <v-toolbar-title>ساخت تیم</v-toolbar-title>
         </v-toolbar>
 
