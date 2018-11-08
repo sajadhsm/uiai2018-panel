@@ -1,0 +1,63 @@
+<template>
+  <v-app>
+    <v-navigation-drawer app v-model="drawer" right clipped>
+      <v-list dense>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>supervisor_account</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>مدیریت تیم</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>code</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>ارسال کد (غیرفعال)</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>videogame_asset</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>مسابقه (غیرفعال)</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-toolbar app clipped-right dark>
+      <v-toolbar-side-icon left @click="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>UIAI2018</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon @click="logout">
+        <v-icon>power_settings_new</v-icon>
+      </v-btn>
+    </v-toolbar>
+
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
+</template>
+
+<script>
+export default {
+  data: () => ({ drawer: true }),
+  methods: {
+    logout() {
+      localStorage.removeItem("access");
+      this.$store.commit("SET_IS_LOGGED_IN", false);
+      this.$store.commit("SET_ACCESS_TOKEN", "");
+      this.$router.push({ name: "login" });
+    }
+  }
+};
+</script>
