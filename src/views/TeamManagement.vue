@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import TeamManagement from '../components/TeamManagement'
+  import TeamManagement from '../components/TeamManagement/TeamManagement'
 
   export default {
     components: {

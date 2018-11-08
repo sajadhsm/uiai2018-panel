@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoggedIn: false,
-    accessToken: ''
+    accessToken: '',
+    hasTeam: false,
   },
   mutations: {
     SET_IS_LOGGED_IN(state, status) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     SET_ACCESS_TOKEN(state, token) {
       state.accessToken = token;
+    },
+    SET_HAS_TEAM(state, status) {
+      state.hasTeam = status;
     }
   },
   actions: {
