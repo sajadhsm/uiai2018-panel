@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <CreateTeamFormCard class="mb-4" />
-    <SentInvitationsTable />
+    <SentInvitationsTable class="mb-4" />
+    <ReceivedInvitationsTable />
   </v-container>
 </template>
 
@@ -11,11 +12,13 @@ import { mapState } from "vuex";
 
 import CreateTeamFormCard from "./CreateTeamFormCard";
 import SentInvitationsTable from "./SentInvitationsTable";
+import ReceivedInvitationsTable from "./ReceivedInvitationsTable";
 
 export default {
   components: {
     CreateTeamFormCard,
-    SentInvitationsTable
+    SentInvitationsTable,
+    ReceivedInvitationsTable
   },
 };
 </script>
