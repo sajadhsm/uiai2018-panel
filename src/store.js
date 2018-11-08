@@ -88,8 +88,11 @@ export default new Vuex.Store({
             }
           })
           .then(res => {
-            context.commit('SET_TEAM_INFO', res.data);
-            resolve(res.data);
+            if (res.status === 200) {
+              context.commit('SET_TEAM_INFO', res.data);
+              context.commit('SET_HAS_TEAM', true);
+              resolve(res.data);
+            }
           })
           .catch(error => {
             if (error.response) reject(error.response.data);

@@ -74,7 +74,9 @@ export default {
             }
           )
           .then(res => {
-            this.$store.commit("SET_HAS_TEAM", true);
+            // Fill TeamInfoTable data
+            // hasTeam to true
+            this.$store.dispatch("getTeamInfo");
             this.snackbar = true;
             this.snackbarColor = "success";
             this.snackbarText = res.data.message;
