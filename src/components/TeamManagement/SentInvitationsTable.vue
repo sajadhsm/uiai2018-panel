@@ -4,7 +4,7 @@
       <v-toolbar dark flat color="primary">
         <v-toolbar-title>دعوت‌نامه‌های ارسالی</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-if="hasTeam" v-model="dialog" max-width="500px">
           <v-btn slot="activator" outline right>دعوت</v-btn>
           <v-card>
             <v-card-title>فرم ارسال دعوت‌نامه</v-card-title>
@@ -91,6 +91,7 @@ export default {
     }
   },
   computed: mapState({
+    hasTeam: state => state.hasTeam,
     accessToken: state => state.accessToken,
     sentInvitations: state => state.userInfo.sent_invitations
   }),
