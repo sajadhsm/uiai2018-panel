@@ -6,11 +6,11 @@
       </v-toolbar>
       <v-data-table
         :headers="headers"
-        :items="sentInvitations"
+        :items="receivedInvitations"
         hide-actions
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.receiver }}</td>
+          <td class="text-xs-center">{{ props.item.sender }}</td>
           <td class="text-xs-center">{{ props.item.team_name }}</td>
           <td class="text-xs-center">
             <v-chip color="orange" small>
@@ -77,7 +77,7 @@ export default {
   }),
   computed: mapState({
     accessToken: state => state.accessToken,
-    sentInvitations: state => state.userInfo.received_invitations
+    receivedInvitations: state => state.userInfo.received_invitations
   }),
   methods: {
     acceptInvitation(prop) {
