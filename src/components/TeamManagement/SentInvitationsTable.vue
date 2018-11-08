@@ -43,7 +43,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.receiver }}</td>
           <td class="text-xs-center">
-            <v-chip color="orange" small>
+            <v-chip :color="statusColor(props.item.status)" text-color="white" small>
               {{ props.item.status }}
             </v-chip>
           </td>
@@ -99,7 +99,6 @@ export default {
       this.dialog = false;
       this.$refs.inviteForm.reset();
     },
-
     send() {
       axios
         .post(
@@ -127,6 +126,15 @@ export default {
             this.$refs.inviteForm.reset();
           }
         });
+    },
+    statusColor(statusText) {
+      if (statusText === 'پذیرفته شده') {
+        return "green"
+      } else if (statusText === 'رد شده') {
+        return "red"
+      } else {
+        return "orange"
+      }
     }
   }
 };
