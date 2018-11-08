@@ -9,7 +9,8 @@ export default new Vuex.Store({
     isLoggedIn: false,
     accessToken: '',
     hasTeam: false,
-    userInfo: {}
+    userInfo: {},
+    teamInfo: {},
   },
   mutations: {
     SET_IS_LOGGED_IN(state, status) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     SET_USER_INFO(state, info) {
       state.userInfo = info;
+    },
+    SET_TEAM_INFO(state, info) {
+      state.teamInfo = info;
     }
   },
   actions: {
@@ -68,6 +72,23 @@ export default new Vuex.Store({
           })
           .then(res => {
             context.commit('SET_USER_INFO', res.data);
+            resolve(res.data);
+          })
+          .catch(error => {
+            if (error.response) reject(error.response.data);
+          })
+      })
+    },
+    getTeamInfo(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('team/info/', {
+            headers: {
+              Authorization: `Bearer ${context.state.accessToken}`
+            }
+          })
+          .then(res => {
+            context.commit('SET_TEAM_INFO', res.data);
             resolve(res.data);
           })
           .catch(error => {
