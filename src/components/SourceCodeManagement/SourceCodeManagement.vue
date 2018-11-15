@@ -1,15 +1,18 @@
 <template>
   <v-container>
-    <UploadCodeForm />
+    <UploadCodeForm class="mb-4" />
+    <UploadedCodesTable />
   </v-container>
 </template>
 
 <script>
 import UploadCodeForm from "./UploadCodeForm";
+import UploadedCodesTable from "./UploadedCodesTable";
 
 export default {
   components: {
-    UploadCodeForm
+    UploadCodeForm,
+    UploadedCodesTable
   }
 };
 </script>
