@@ -11,3 +11,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.snackbarBtn {
+  /* Fix large left margin in RTL */
+  margin-left: 0 !important;
+}
+</style>

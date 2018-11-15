@@ -140,10 +140,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.snackbarBtn {
-  /* Fix large left margin in RTL */
-  margin-left: 0 !important;
-}
-</style>
