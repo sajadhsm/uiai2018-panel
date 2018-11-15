@@ -7,28 +7,41 @@
         </v-toolbar>
 
         <v-card-text>
-            <label class="file-select">
-              <div class="select-button">
-                <span v-if="file">{{file.name}}</span>
-                <span v-else>
-                  <v-icon dark>cloud_upload</v-icon> سورس کد را در قالب فایل zip انتخاب کنید
-                </span>
-              </div>
-              <input
-                type="file"
-                accept="application/zip"
-                @change="handleFileChange"/>
-            </label>
+            <v-container
+              grid-list-xl
+              class="pa-0">
+              <v-layout row wrap>
+                <v-flex sm6>
+                  <label class="file-select">
+                    <span>سورس کد:</span>
+                    <div class="select-button mt-2">
+                      <span v-if="file">{{file.name}}</span>
+                      <span v-else>
+                        <v-icon dark>cloud_upload</v-icon> انتخاب فایل zip
+                      </span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="application/zip"
+                      @change="handleFileChange"/>
+                  </label>
+                </v-flex>
 
-            <div class="mt-3">
-              <span>زبان برنامه‌نویسی</span>
-              <v-select
-                v-model="lang"
-                :items="progLangs"
-                class="mt-2"
-                solo
-              />
-            </div>
+                <v-flex sm6>
+                  <div>
+                    <span>زبان برنامه‌نویسی:</span>
+                    <v-select
+                      v-model="lang"
+                      :items="progLangs"
+                      item-text="text"
+                      item-value="value"
+                      class="mt-2"
+                      solo
+                    />
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-container>
         </v-card-text>
 
         <v-card-actions>
@@ -64,7 +77,21 @@ export default {
   data: () => ({
     file: null,
     lang: "C++",
-    progLangs: ["C++", "Python", "Java"],
+    progLangs: [
+      // Just for ++C text on RTL
+      {
+        text: "++C",
+        value: "C++"
+      },
+      {
+        text: "Python",
+        value: "Python"
+      },
+      {
+        text: "Java",
+        value: "Java"
+      }
+    ],
     snackbar: false,
     snackbarText: "",
     snackbarColor: ""
@@ -100,7 +127,7 @@ export default {
 
 <style scoped>
 .file-select > .select-button {
-  padding: 1.5rem 1rem;
+  padding: 12px;
   font-size: 1.1rem;
   color: white;
   background-color: hsl(211, 77%, 50%);
