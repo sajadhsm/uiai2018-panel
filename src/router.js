@@ -5,6 +5,7 @@ import store from './store'
 import Login from './views/Login.vue';
 import Dashboard from './views/Dashboard.vue';
 import TeamManagement from './views/TeamManagement.vue';
+import SourceCodeManagement from './views/SourceCodeManagement.vue';
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ const router = new Router({
           path: '',
           name: 'teamManagement',
           component: TeamManagement
+        },
+        {
+          path: '/sourcecode',
+          name: 'SourceCodeManagement',
+          component: SourceCodeManagement
         }
       ]
     },
