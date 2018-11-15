@@ -3,7 +3,41 @@
     <v-flex class="elevation-1">
       <v-toolbar dark flat color="primary">
         <v-toolbar-title>اطلاعات تیم</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-btn slot="activator" icon right>
+            <v-icon>build</v-icon>
+          </v-btn>
+          <v-card>
+            <v-card-title>ویرایش اطلاعات تیم</v-card-title>
+
+            <v-card-text>
+              <v-form ref="editTeamForm" v-model="valid">
+                <v-text-field
+                  v-model="teamName"
+                  :rules="teamNameRules"
+                  label="نام تیم"
+                  required
+                ></v-text-field>
+              </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click.native="close">لغو</v-btn>
+              <v-btn
+                color="blue darken-1"
+                flat
+                :disabled="!valid"
+                @click.native="sumbitEditForm">ویرایش</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
+
       <v-data-table
         :headers="headers"
         :items="teamInfo"
@@ -22,6 +56,17 @@
         </template>
       </v-data-table>
     </v-flex>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      left
+      :color="snackbarColor"
+    >
+      {{ snackbarText }}
+      <v-btn class="snackbarBtn" right icon @click="snackbar = false">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-layout>
 </template>
 
@@ -31,16 +76,66 @@ import { mapState } from "vuex";
 
 export default {
   data: () => ({
+    dialog: false,
+    valid: true,
+    teamName: "",
+    teamNameRules: [
+      v => !!v || "نام تیم الزامی است",
+      v =>
+        /[A-Za-z0-9 _-]/.test(v) ||
+        "نام تیم فقط باید شامل حروف انگلیسی، اعداد، فاصله و یا کاراکترهای - و ـ باشد",
+      v => (v && v.length <= 16) || "نام تیم باید کمتر از ۱۶ حرف باشد"
+    ],
     headers: [
       // { text: "لوگو", value: "logo", align: "center", sortable: false },
       { text: "نام تیم", value: "name", align: "center", sortable: false },
       { text: "عضو اول", value: "members", align: "center", sortable: false },
       { text: "عضو دوم", value: "members", align: "center", sortable: false },
       { text: "عضو سوم", value: "members", align: "center", sortable: false }
-    ]
+    ],
+    snackbar: false,
+    snackbarText: "",
+    snackbarColor: ""
   }),
   computed: mapState({
-    teamInfo: state => [state.teamInfo]
-  })
+    teamInfo: state => [state.teamInfo],
+    accessToken: state => state.accessToken
+  }),
+  methods: {
+    close() {
+      this.dialog = false;
+      this.$refs.editTeamForm.reset();
+    },
+    sumbitEditForm() {
+      if (this.$refs.editTeamForm.validate()) {
+        axios
+          .post(
+            "/team/create/",
+            { name: this.teamName },
+            {
+              headers: {
+                Authorization: `Bearer ${this.accessToken}`
+              }
+            }
+          )
+          .then(res => {
+            this.snackbar = true;
+            this.snackbarColor = "success";
+            this.snackbarText = res.data.message;
+
+            this.$store.dispatch("getTeamInfo");
+            this.close();
+          })
+          .catch(error => {
+            if (error.response) {
+              this.snackbar = true;
+              this.snackbarColor = "error";
+              this.snackbarText = error.response.data.message;
+              this.$refs.editTeamForm.reset();
+            }
+          });
+      }
+    }
+  }
 };
 </script>
