@@ -45,11 +45,18 @@
     <v-content>
       <router-view />
     </v-content>
+
+    <GlobalSnackbar />
   </v-app>
 </template>
 
 <script>
+import Snackbar from "./Snackbar";
+
 export default {
+  components: {
+    GlobalSnackbar: Snackbar
+  },
   data: () => ({ drawer: true }),
   methods: {
     logout() {

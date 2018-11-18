@@ -50,17 +50,6 @@
         </template>
       </v-data-table>
     </v-flex>
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      left
-      :color="snackbarColor"
-    >
-      {{ snackbarText }}
-      <v-btn class="snackbarBtn" right icon @click="snackbar = false">
-        <v-icon>close</v-icon>
-      </v-btn>
-    </v-snackbar>
   </v-layout>
 </template>
 
@@ -80,10 +69,7 @@ export default {
     headers: [
       { text: "دریافت‌کننده", value: "receiver", align: "center" },
       { text: "وضعیت", value: "status", align: "center" }
-    ],
-    snackbar: false,
-    snackbarText: "",
-    snackbarColor: ""
+    ]
   }),
   watch: {
     dialog(val) {
@@ -112,29 +98,31 @@ export default {
           }
         )
         .then(res => {
-          this.snackbar = true;
-          this.snackbarColor = "success";
-          this.snackbarText = res.data.message;
+          this.$store.dispatch("showSnackbar", {
+            text: res.data.message,
+            color: "success"
+          });
           // Update sentInvites table
-          this.$store.dispatch('getUserInfo');
+          this.$store.dispatch("getUserInfo");
           this.close();
         })
         .catch(error => {
           if (error.response) {
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            this.snackbarText = error.response.data.message;
+            this.$store.dispatch("showSnackbar", {
+              text: error.response.data.message,
+              color: "error"
+            });
             this.$refs.inviteForm.reset();
           }
         });
     },
     statusColor(statusText) {
-      if (statusText === 'پذیرفته شده') {
-        return "green"
-      } else if (statusText === 'رد شده') {
-        return "red"
+      if (statusText === "پذیرفته شده") {
+        return "green";
+      } else if (statusText === "رد شده") {
+        return "red";
       } else {
-        return "orange"
+        return "orange";
       }
     }
   }

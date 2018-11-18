@@ -37,23 +37,19 @@
           </v-card>
         </v-flex>
       </v-layout>
-      <v-snackbar
-        v-model="snackbar"
-        bottom
-        left
-        :color="snackbarColor"
-      >
-        {{ snackbarText }}
-        <v-btn class="snackbarBtn" right icon @click="snackbar = false">
-          <v-icon>close</v-icon>
-        </v-btn>
-      </v-snackbar>
+
+      <GlobalSnackbar />
     </v-container>
   </v-content>
 </template>
 
 <script>
+import Snackbar from "./Snackbar";
+
 export default {
+  components: {
+    GlobalSnackbar: Snackbar
+  },
   data: () => ({
     valid: true,
     email: "",
@@ -62,10 +58,7 @@ export default {
       v => /.+@.+/.test(v) || "ایمیل معتبر نیست"
     ],
     password: "",
-    passwordRules: [v => !!v || "رمزعبور الزامی است"],
-    snackbar: false,
-    snackbarText: "",
-    snackbarColor: ""
+    passwordRules: [v => !!v || "رمزعبور الزامی است"]
   }),
   methods: {
     submit() {
@@ -78,9 +71,10 @@ export default {
           .then(() => this.$router.push({ name: "teamManagement" }))
           .catch(error => {
             if (error.non_field_errors) {
-              this.snackbar = true;
-              this.snackbarColor = "error";
-              this.snackbarText = error.non_field_errors[0];
+              this.$store.dispatch("showSnackbar", {
+                text: error.non_field_errors[0],
+                color: "error"
+              });
               this.$refs.form.reset();
             }
           });
@@ -89,10 +83,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.snackbarBtn {
-  /* Fix large left margin in RTL */
-  margin-left: 0 !important;
-}
-</style>

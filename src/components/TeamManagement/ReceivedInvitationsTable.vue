@@ -51,17 +51,6 @@
         </template>
       </v-data-table>
     </v-flex>
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      left
-      :color="snackbarColor"
-    >
-      {{ snackbarText }}
-      <v-btn class="snackbarBtn" right icon @click="snackbar = false">
-        <v-icon>close</v-icon>
-      </v-btn>
-    </v-snackbar>
   </v-layout>
 </template>
 
@@ -76,10 +65,7 @@ export default {
       { text: "نام تیم", value: "team_name", align: "center" },
       { text: "وضعیت", value: "status", align: "center" },
       { text: "عملیات", value: "receiver", sortable: false, align: "center" }
-    ],
-    snackbar: false,
-    snackbarText: "",
-    snackbarColor: ""
+    ]
   }),
   computed: mapState({
     accessToken: state => state.accessToken,
@@ -102,15 +88,17 @@ export default {
           this.$store.dispatch("getUserInfo");
           this.$store.dispatch("getTeamInfo");
 
-          this.snackbar = true;
-          this.snackbarColor = "success";
-          this.snackbarText = res.data.message;
+          this.$store.dispatch("showSnackbar", {
+            text: res.data.message,
+            color: "success"
+          });
         })
         .catch(error => {
           if (error.response) {
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            this.snackbarText = error.response.data.message;
+            this.$store.dispatch("showSnackbar", {
+              text: error.response.data.message,
+              color: "error"
+            });
           }
         });
     },
@@ -129,15 +117,17 @@ export default {
           // JIT update other components
           this.$store.dispatch("getUserInfo");
 
-          this.snackbar = true;
-          this.snackbarColor = "info";
-          this.snackbarText = res.data.message;
+          this.$store.dispatch("showSnackbar", {
+            text: res.data.message,
+            color: "info"
+          });
         })
         .catch(error => {
           if (error.response) {
-            this.snackbar = true;
-            this.snackbarColor = "error";
-            this.snackbarText = error.response.data.message;
+            this.$store.dispatch("showSnackbar", {
+              text: error.response.data.message,
+              color: "error"
+            });
           }
         });
     },

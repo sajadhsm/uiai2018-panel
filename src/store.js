@@ -6,6 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    snackbarVisibility: false,
+    snackbarText: '',
+    snackbarColor: '',
     isLoggedIn: false,
     accessToken: '',
     hasTeam: false,
@@ -13,6 +16,15 @@ export default new Vuex.Store({
     teamInfo: {},
   },
   mutations: {
+    SET_SNACKBAR_VISIBILITY(state, status) {
+      state.snackbarVisibility = status;
+    },
+    SET_SNACKBAR_TEXT(state, text) {
+      state.snackbarText = text;
+    },
+    SET_SNACKBAR_COLOR(state, color) {
+      state.snackbarColor = color;
+    },
     SET_IS_LOGGED_IN(state, status) {
       state.isLoggedIn = status;
     },
@@ -30,6 +42,11 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    showSnackbar({ commit }, payload) {
+      commit('SET_SNACKBAR_VISIBILITY', true);
+      commit('SET_SNACKBAR_TEXT', payload.text);
+      commit('SET_SNACKBAR_COLOR', payload.color);
+    },
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios

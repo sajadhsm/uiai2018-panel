@@ -79,17 +79,6 @@
         </template>
       </v-data-table>
     </v-flex>
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      left
-      :color="snackbarColor"
-    >
-      {{ snackbarText }}
-      <v-btn class="snackbarBtn" right icon @click="snackbar = false">
-        <v-icon>close</v-icon>
-      </v-btn>
-    </v-snackbar>
   </v-layout>
 </template>
 
@@ -116,10 +105,7 @@ export default {
       { text: "عضو اول", value: "members", align: "center", sortable: false },
       { text: "عضو دوم", value: "members", align: "center", sortable: false },
       { text: "عضو سوم", value: "members", align: "center", sortable: false }
-    ],
-    snackbar: false,
-    snackbarText: "",
-    snackbarColor: ""
+    ]
   }),
   computed: mapState({
     teamInfo: state => [state.teamInfo],
@@ -143,18 +129,20 @@ export default {
             }
           )
           .then(res => {
-            this.snackbar = true;
-            this.snackbarColor = "success";
-            this.snackbarText = res.data.message;
-
+            this.$store.dispatch("showSnackbar", {
+              text: res.data.message,
+              color: "success"
+            });
             this.$store.dispatch("getTeamInfo");
             this.close();
           })
           .catch(error => {
             if (error.response) {
-              this.snackbar = true;
-              this.snackbarColor = "error";
-              this.snackbarText = error.response.data.message;
+              this.$store.dispatch("showSnackbar", {
+                text: error.response.data.message,
+                color: "error"
+              });
+
               this.$refs.editTeamForm.reset();
             }
           });
@@ -164,16 +152,18 @@ export default {
       this.$store
         .dispatch("leaveTeam")
         .then(data => {
-          this.snackbar = true;
-          this.snackbarColor = "success";
-          this.snackbarText = data.message;
-          
+          this.$store.dispatch("showSnackbar", {
+            text: data.message,
+            color: "success"
+          });
+
           this.leaveTeamDialog = false;
         })
         .catch(error => {
-          this.snackbar = true;
-          this.snackbarColor = "error";
-          this.snackbarText = error.message;
+          this.$store.dispatch("showSnackbar", {
+            text: error.message,
+            color: "error"
+          });
         });
     }
   }

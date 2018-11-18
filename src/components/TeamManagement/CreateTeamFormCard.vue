@@ -26,18 +26,6 @@
         </v-card-actions>
       </v-card>
     </v-flex>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      left
-      :color="snackbarColor"
-    >
-      {{ snackbarText }}
-      <v-btn class="snackbarBtn" right icon @click="snackbar = false">
-        <v-icon>close</v-icon>
-      </v-btn>
-    </v-snackbar>
   </v-layout>
 </template>
 
@@ -55,10 +43,7 @@ export default {
         /[A-Za-z0-9 _-]/.test(v) ||
         "نام تیم فقط باید شامل حروف انگلیسی، اعداد، فاصله و یا کاراکترهای - و ـ باشد",
       v => (v && v.length <= 16) || "نام تیم باید کمتر از ۱۶ حرف باشد"
-    ],
-    snackbar: false,
-    snackbarText: "",
-    snackbarColor: ""
+    ]
   }),
   computed: mapState(["accessToken"]),
   methods: {
@@ -80,15 +65,18 @@ export default {
             // Fill TeamInfoTable data
             // hasTeam to true
             this.$store.dispatch("getTeamInfo");
-            this.snackbar = true;
-            this.snackbarColor = "success";
-            this.snackbarText = res.data.message;
+
+            this.$store.dispatch("showSnackbar", {
+              text: res.data.message,
+              color: "success"
+            });
           })
           .catch(error => {
             if (error.response) {
-              this.snackbar = true;
-              this.snackbarColor = "error";
-              this.snackbarText = error.response.data.message;
+              this.$store.dispatch("showSnackbar", {
+                text: error.response.data.message,
+                color: "error"
+              });
               this.$refs.regTeamForm.reset();
             }
           });
