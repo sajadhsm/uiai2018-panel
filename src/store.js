@@ -98,6 +98,24 @@ export default new Vuex.Store({
             if (error.response) reject(error.response.data);
           })
       })
+    },
+    leaveTeam(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('team/leave/', {}, {
+            headers: {
+              Authorization: `Bearer ${context.state.accessToken}`
+            }
+          })
+          .then(res => {
+            context.commit('SET_TEAM_INFO', []);
+            context.commit('SET_HAS_TEAM', false);
+            resolve(res.data);
+          })
+          .catch(error => {
+            if (error.response) reject(error.response.data);
+          })
+      });
     }
   }
 })

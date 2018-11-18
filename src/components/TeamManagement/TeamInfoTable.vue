@@ -4,9 +4,32 @@
       <v-toolbar dark flat color="primary">
         <v-toolbar-title>اطلاعات تیم</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-dialog v-model="leaveTeamDialog" max-width="500px">
+          <v-tooltip right slot="activator">
+            <v-btn icon right slot="activator">
+              <v-icon>block</v-icon>
+            </v-btn>
+            <span>خروج از تیم</span>
+          </v-tooltip>
+          <v-card>
+            <v-card-text>آیا از خروج از این تیم مطمئن هستید؟</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click.native="leaveTeamDialog = false">خیر</v-btn>
+              <v-btn
+                color="blue darken-1"
+                flat
+                @click.native="handleLeaveTeam">بله</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <v-dialog v-model="dialog" max-width="500px">
           <v-btn slot="activator" icon right>
-            <v-icon>build</v-icon>
+            <v-icon>settings</v-icon>
           </v-btn>
           <v-card>
             <v-card-title>ویرایش اطلاعات تیم</v-card-title>
@@ -77,6 +100,7 @@ import { mapState } from "vuex";
 export default {
   data: () => ({
     dialog: false,
+    leaveTeamDialog: false,
     valid: true,
     teamName: "",
     teamNameRules: [
@@ -135,6 +159,22 @@ export default {
             }
           });
       }
+    },
+    handleLeaveTeam() {
+      this.$store
+        .dispatch("leaveTeam")
+        .then(data => {
+          this.snackbar = true;
+          this.snackbarColor = "success";
+          this.snackbarText = data.message;
+          
+          this.leaveTeamDialog = false;
+        })
+        .catch(error => {
+          this.snackbar = true;
+          this.snackbarColor = "error";
+          this.snackbarText = error.message;
+        });
     }
   }
 };
