@@ -53,18 +53,6 @@
         </v-card-actions>
       </v-card>
     </v-flex>
-
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      left
-      :color="snackbarColor"
-    >
-      {{ snackbarText }}
-      <v-btn class="snackbarBtn" right icon @click="snackbar = false">
-        <v-icon>close</v-icon>
-      </v-btn>
-    </v-snackbar>
   </v-layout>
 </template>
 
@@ -100,16 +88,18 @@ export default {
           }
         })
         .then(res => {
-          this.snackbar = true;
-          this.snackbarColor = "success";
-          this.snackbarText = res.data.message;
+          this.$store.dispatch("showSnackbar", {
+            text: res.data.message,
+            color: "success"
+          });
           // Update uploadedCodes table table
           this.$store.dispatch("getTeamInfo");
         })
         .catch(error => {
-          this.snackbar = true;
-          this.snackbarColor = "error";
-          this.snackbarText = error.response.data.message;
+          this.$store.dispatch("showSnackbar", {
+            text: error.response.data.message,
+            color: "error"
+          });
         });
     }
   }
