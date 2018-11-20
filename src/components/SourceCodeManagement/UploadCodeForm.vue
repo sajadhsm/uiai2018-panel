@@ -76,22 +76,8 @@ export default {
   computed: mapState(["accessToken"]),
   data: () => ({
     file: null,
-    lang: "C++",
-    progLangs: [
-      // Just for ++C text on RTL
-      {
-        text: "++C",
-        value: "C++"
-      },
-      {
-        text: "Python",
-        value: "Python"
-      },
-      {
-        text: "Java",
-        value: "Java"
-      }
-    ],
+    lang: "CPP",
+    progLangs: ["CPP", "PYTHON", "JAVA"],
     snackbar: false,
     snackbarText: "",
     snackbarColor: ""
@@ -103,23 +89,28 @@ export default {
     submit() {
       const formData = new FormData();
 
-      formData.append("lang", this.lang);
-      formData.append("file", this.file);
+      formData.append("language", this.lang);
+      formData.append("zip_file", this.file);
 
-      // BackEnd endpoint is not ready yet!
-      // axios
-      //   .post("/uploadcode/", formData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       Authorization: `Bearer ${this.accessToken}`
-      //     }
-      //   })
-      //   .then(() => {
-      //     console.log("SUCCESS!!");
-      //   })
-      //   .catch(() => {
-      //     console.log("FAILURE!!");
-      //   });
+      axios
+        .post("/team/upload_code/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${this.accessToken}`
+          }
+        })
+        .then(res => {
+          this.snackbar = true;
+          this.snackbarColor = "success";
+          this.snackbarText = res.data.message;
+          // Update uploadedCodes table table
+          this.$store.dispatch("getTeamInfo");
+        })
+        .catch(error => {
+          this.snackbar = true;
+          this.snackbarColor = "error";
+          this.snackbarText = error.response.data.message;
+        });
     }
   }
 };
