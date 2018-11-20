@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer app v-model="drawer" right clipped>
       <v-list dense>
-        <v-list-tile>
+        <v-list-tile :to="{name: 'teamManagement'}" exact>
           <v-list-tile-action>
             <v-icon>supervisor_account</v-icon>
           </v-list-tile-action>
@@ -11,7 +11,7 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile>
+        <v-list-tile :to="{name: 'SourceCodeManagement'}">
           <v-list-tile-action>
             <v-icon>code</v-icon>
           </v-list-tile-action>
