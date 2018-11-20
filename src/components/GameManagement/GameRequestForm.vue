@@ -64,7 +64,7 @@ export default {
       if (this.$refs.requestGameForm.validate()) {
         axios
           .post(
-            "http://127.0.0.1:8000/uiai2018/games/send/",
+            "games/send/",
             {
               team_id: this.teamID
             },

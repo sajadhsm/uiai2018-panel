@@ -81,7 +81,7 @@ export default {
       formData.append("zip_file", this.file);
 
       axios
-        .post("/team/upload_code/", formData, {
+        .post("api/team/upload_code/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${this.accessToken}`

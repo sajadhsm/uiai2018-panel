@@ -75,7 +75,7 @@ export default {
       return;
       axios
         .post(
-          "http://127.0.0.1:8000/uiai2018/games/accept/",
+          "games/accept/",
           // TODO: BE WIP
           { id: prop.id },
           {
@@ -108,7 +108,7 @@ export default {
       // TODO: BE WIP
       axios
         .post(
-          "http://127.0.0.1:8000/uiai2018/games/reject/",
+          "games/reject/",
           { id: prop.id },
           {
             headers: {

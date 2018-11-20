@@ -50,7 +50,7 @@ export default new Vuex.Store({
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/token/', payload)
+          .post('api/token/', payload)
           .then(res => {
             if (res.status === 200) {
               context.commit('SET_ACCESS_TOKEN', res.data.access);
@@ -82,7 +82,7 @@ export default new Vuex.Store({
     getUserInfo(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get('user/info/', {
+          .get('api/user/info/', {
             headers: {
               Authorization: `Bearer ${context.state.accessToken}`
             }
@@ -99,7 +99,7 @@ export default new Vuex.Store({
     getTeamInfo(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get('team/info/', {
+          .get('api/team/info/', {
             headers: {
               Authorization: `Bearer ${context.state.accessToken}`
             }
@@ -119,7 +119,7 @@ export default new Vuex.Store({
     leaveTeam(context) {
       return new Promise((resolve, reject) => {
         axios
-          .post('team/leave/', {}, {
+          .post('api/team/leave/', {}, {
             headers: {
               Authorization: `Bearer ${context.state.accessToken}`
             }

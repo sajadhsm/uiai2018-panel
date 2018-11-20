@@ -120,7 +120,7 @@ export default {
       if (this.$refs.editTeamForm.validate()) {
         axios
           .post(
-            "/team/create/",
+            "api/team/create/",
             { name: this.teamName },
             {
               headers: {

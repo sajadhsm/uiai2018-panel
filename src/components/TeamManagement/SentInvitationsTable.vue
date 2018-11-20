@@ -89,7 +89,7 @@ export default {
     send() {
       axios
         .post(
-          "team/invite/",
+          "api/team/invite/",
           { email: this.emailToInvite },
           {
             headers: {

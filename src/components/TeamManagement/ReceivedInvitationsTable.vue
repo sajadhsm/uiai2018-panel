@@ -75,7 +75,7 @@ export default {
     acceptInvitation(prop) {
       axios
         .post(
-          "/team/accept/",
+          "api/team/accept/",
           { id: prop.id },
           {
             headers: {
@@ -105,7 +105,7 @@ export default {
     rejectInvitation(prop) {
       axios
         .post(
-          "/team/reject/",
+          "api/team/reject/",
           { id: prop.id },
           {
             headers: {

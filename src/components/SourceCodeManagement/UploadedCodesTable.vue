@@ -82,7 +82,7 @@ export default {
     handleSetFinalCode(id) {
       axios
         .post(
-          "team/set_final_code/",
+          "api/team/set_final_code/",
           { id },
           {
             headers: {
