@@ -6,6 +6,7 @@ import Login from './views/Login.vue';
 import Dashboard from './views/Dashboard.vue';
 import TeamManagement from './views/TeamManagement.vue';
 import SourceCodeManagement from './views/SourceCodeManagement.vue';
+import GameManagement from './views/GameManagement.vue';
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ const router = new Router({
           path: '/sourcecode',
           name: 'SourceCodeManagement',
           component: SourceCodeManagement
+        },
+        {
+          path: '/game',
+          name: 'GameManagement',
+          component: GameManagement
         }
       ]
     },
