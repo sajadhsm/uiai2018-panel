@@ -8,6 +8,7 @@
       <v-data-table
         :headers="headers"
         :items="uploadedFiles"
+        :pagination.sync="pagination"
         hide-actions
       >
         <template slot="items" slot-scope="props">
@@ -19,8 +20,7 @@
             <v-radio-group
               v-model="selectedCodeID"
               name="rowSelector"
-              hide-details
-              @click="handleRowSelect">
+              hide-details>
               <v-radio
                 class="ma-0"
                 color="success"
@@ -29,11 +29,13 @@
                 :value="props.item.id"/>
             </v-radio-group>
           </td>
-          <td class="text-xs-center">{{ props.item.upload_date }}</td>
-          <td class="text-xs-center">{{ props.item.lang }}</td>
+          <td class="text-xs-center">
+            {{ new Date(props.item.upload_time).toLocaleString() }}
+          </td>
+          <td class="text-xs-center">{{ props.item.language }}</td>
           <td class="text-xs-center">
             <v-chip :color="statusColor(props.item.status)" text-color="white" small>
-              {{ props.item.status }}
+              {{ props.item.compile_status }}
             </v-chip>
           </td>
         </template>
@@ -55,57 +57,67 @@
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 
 export default {
   data: () => ({
-    selectedCodeID: 0,
     headers: [
       { text: "کد نهایی", align: "right", sortable: false },
-      { text: "تاریخ ارسال", value: "upload_date", align: "center" },
-      { text: "زبان", value: "lang", align: "center" },
-      { text: "وضعیت", value: "status", align: "center" }
+      { text: "تاریخ ارسال", value: "upload_time", align: "center" },
+      { text: "زبان", value: "language", align: "center" },
+      { text: "وضعیت", value: "compile_status", align: "center" }
     ],
+    // Used for default sorting
+    pagination: { sortBy: "upload_time", descending: true },
     snackbar: false,
     snackbarText: "",
-    snackbarColor: "",
-    uploadedFiles: [
-      {
-        id: 0,
-        upload_date: new Date().toLocaleString(),
-        lang: "C++",
-        status: "خطا در کامپایل"
-      },
-      {
-        id: 1,
-        upload_date: new Date().toLocaleString(),
-        lang: "Java",
-        status: "خطا در کامپایل"
-      },
-      {
-        id: 2,
-        upload_date: new Date().toLocaleString(),
-        lang: "Python",
-        status: "کامپایل شده"
-      },
-      {
-        id: 3,
-        upload_date: new Date().toLocaleString(),
-        lang: "C++",
-        status: "در انتظار کامپایل"
-      },
-    ]
+    snackbarColor: ""
   }),
-  computed: mapState({
-    accessToken: state => state.accessToken,
-    // uploadedFiles: state => state.userInfo.received_invitations
-  }),
-  methods: {
-    handleRowSelect() {
-      this.snackbar =  true;
-      this.snackbarText =  `کد نهایی (${this.selectedCodeID}) با موفقیت انتخاب شد`;
-      this.snackbarColor =  "success";
+  computed: {
+    selectedCodeID: {
+      get() {
+        return this.$store.state.teamInfo.uploaded_codes.find(
+          code => code.is_final
+        ).id;
+      },
+      set(value) {
+        this.handleSetFinalCode(value);
+      }
     },
+    ...mapState({
+      accessToken: state => state.accessToken,
+      uploadedFiles: state => state.teamInfo.uploaded_codes
+    })
+  },
+  methods: {
+    handleSetFinalCode(id) {
+      axios
+        .post(
+          "team/set_final_code/",
+          { id },
+          {
+            headers: {
+              Authorization: `Bearer ${this.accessToken}`
+            }
+          }
+        )
+        .then(res => {
+          this.snackbar = true;
+          this.snackbarColor = "success";
+          this.snackbarText = res.data.message;
+          // Update sentInvites table
+          this.$store.dispatch("getTeamInfo");
+        })
+        .catch(error => {
+          if (error.response) {
+            this.snackbar = true;
+            this.snackbarColor = "error";
+            this.snackbarText = error.response.data.message;
+          }
+        });
+    },
+    // TODO: Change the condition texts when the server is ready
     statusColor(statusText) {
       if (statusText === "کامپایل شده") {
         return "green";
