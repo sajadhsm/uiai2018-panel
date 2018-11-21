@@ -94,6 +94,7 @@ export default {
           });
           // Update uploadedCodes table table
           this.$store.dispatch("getTeamInfo");
+          this.file = null;
         })
         .catch(error => {
           this.$store.dispatch("showSnackbar", {
