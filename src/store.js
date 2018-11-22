@@ -14,6 +14,7 @@ export default new Vuex.Store({
     hasTeam: false,
     userInfo: {},
     teamInfo: {},
+    availableTeams: []
   },
   mutations: {
     SET_SNACKBAR_VISIBILITY(state, status) {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     SET_TEAM_INFO(state, info) {
       state.teamInfo = info;
+    },
+    SET_AVAILABLE_TEAMS(state, teams) {
+      state.availableTeams = teams;
     }
   },
   actions: {
@@ -50,7 +54,7 @@ export default new Vuex.Store({
     login(context, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/token/', payload)
+          .post('api/token/', payload)
           .then(res => {
             if (res.status === 200) {
               context.commit('SET_ACCESS_TOKEN', res.data.access);
@@ -82,7 +86,7 @@ export default new Vuex.Store({
     getUserInfo(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get('user/info/', {
+          .get('api/user/info/', {
             headers: {
               Authorization: `Bearer ${context.state.accessToken}`
             }
@@ -99,7 +103,7 @@ export default new Vuex.Store({
     getTeamInfo(context) {
       return new Promise((resolve, reject) => {
         axios
-          .get('team/info/', {
+          .get('api/team/info/', {
             headers: {
               Authorization: `Bearer ${context.state.accessToken}`
             }
@@ -116,10 +120,29 @@ export default new Vuex.Store({
           })
       })
     },
+    getAvailableTeams(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('api/get_available_teams/', {
+            headers: {
+              Authorization: `Bearer ${context.state.accessToken}`
+            }
+          })
+          .then(res => {
+            if (res.status === 200) {
+              context.commit('SET_AVAILABLE_TEAMS', res.data);
+              resolve(res.data);
+            }
+          })
+          .catch(error => {
+            if (error.response) reject(error.response.data);
+          })
+      })
+    },
     leaveTeam(context) {
       return new Promise((resolve, reject) => {
         axios
-          .post('team/leave/', {}, {
+          .post('api/team/leave/', {}, {
             headers: {
               Authorization: `Bearer ${context.state.accessToken}`
             }

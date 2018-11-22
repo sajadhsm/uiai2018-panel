@@ -16,7 +16,7 @@ export default {
 
     if (accToken) {
       axios
-        .post("/token/verify/", {
+        .post("api/token/verify/", {
           token: accToken
         })
         .then(res => {

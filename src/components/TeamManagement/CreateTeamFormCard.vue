@@ -51,7 +51,7 @@ export default {
       if (this.$refs.regTeamForm.validate()) {
         axios
           .post(
-            "/team/create/",
+            "api/team/create/",
             {
               name: this.teamName
             },

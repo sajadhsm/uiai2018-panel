@@ -16,16 +16,16 @@
             <v-icon>code</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>ارسال کد (غیرفعال)</v-list-tile-title>
+            <v-list-tile-title>ارسال کد</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile>
+        <v-list-tile :to="{name: 'GameManagement'}">
           <v-list-tile-action>
             <v-icon>videogame_asset</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>مسابقه (غیرفعال)</v-list-tile-title>
+            <v-list-tile-title>بازی دوستانه</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>

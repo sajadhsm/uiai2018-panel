@@ -21,11 +21,23 @@
               v-model="selectedCodeID"
               name="rowSelector"
               hide-details>
+              <!-- 
+                <v-radio
+                  ...
+                  @click="handleSetFinalCode(props.item.id)"
+                  ...>
+                Fixes the multi radio button selection bug
+                when the last selected code is not compiled currectly...
+                Also notice that the setter in computed selectedCodeID
+                is commented out since the below solution surprisingly
+                works with out it!! O_o
+               -->
               <v-radio
                 class="ma-0"
                 color="success"
                 on-icon="check_box"
                 off-icon="check_box_outline_blank"
+                @click="handleSetFinalCode(props.item.id)"
                 :value="props.item.id"/>
             </v-radio-group>
           </td>
@@ -34,7 +46,7 @@
           </td>
           <td class="text-xs-center">{{ props.item.language }}</td>
           <td class="text-xs-center">
-            <v-chip :color="statusColor(props.item.status)" text-color="white" small>
+            <v-chip :color="statusColor(props.item.compile_status)" text-color="white" small>
               {{ props.item.compile_status }}
             </v-chip>
           </td>
@@ -57,7 +69,7 @@ export default {
       { text: "وضعیت", value: "compile_status", align: "center" }
     ],
     // Used for default sorting
-    pagination: { sortBy: "upload_time", descending: true },
+    pagination: { sortBy: "upload_time", descending: true, rowsPerPage: -1 },
     snackbar: false,
     snackbarText: "",
     snackbarColor: ""
@@ -65,13 +77,16 @@ export default {
   computed: {
     selectedCodeID: {
       get() {
-        return this.$store.state.teamInfo.uploaded_codes.find(
+        const finalCode = this.$store.state.teamInfo.uploaded_codes.find(
           code => code.is_final
-        ).id;
-      },
-      set(value) {
-        this.handleSetFinalCode(value);
+        );
+
+        return finalCode ? finalCode.id : null;
       }
+      // Commented out because of @click on v-radio
+      // set(value) {
+      //    this.handleSetFinalCode(value);
+      // }
     },
     ...mapState({
       accessToken: state => state.accessToken,
@@ -82,7 +97,7 @@ export default {
     handleSetFinalCode(id) {
       axios
         .post(
-          "team/set_final_code/",
+          "api/team/set_final_code/",
           { id },
           {
             headers: {
@@ -95,7 +110,7 @@ export default {
             text: res.data.message,
             color: "success"
           });
-          // Update sentInvites table
+          // Update uploadedCodes table
           this.$store.dispatch("getTeamInfo");
         })
         .catch(error => {
@@ -107,11 +122,10 @@ export default {
           }
         });
     },
-    // TODO: Change the condition texts when the server is ready
     statusColor(statusText) {
-      if (statusText === "کامپایل شده") {
+      if (statusText === "کامپایل موفق") {
         return "green";
-      } else if (statusText === "خطا در کامپایل") {
+      } else if (statusText === "خطای کامپایل") {
         return "red";
       } else {
         return "orange";

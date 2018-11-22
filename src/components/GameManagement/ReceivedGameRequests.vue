@@ -2,16 +2,18 @@
   <v-layout>
     <v-flex class="elevation-1">
       <v-toolbar dark flat color="primary">
-        <v-toolbar-title>دعوت‌نامه‌های دریافتی</v-toolbar-title>
+        <v-toolbar-title>درخواست‌های دریافتی</v-toolbar-title>
       </v-toolbar>
       <v-data-table
         :headers="headers"
-        :items="receivedInvitations"
+        :items="receivedGameRequests"
         hide-actions
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.sender }}</td>
-          <td class="text-xs-center">{{ props.item.team_name }}</td>
+          <td class="text-xs-center">{{ props.item.sender_name }}</td>
+          <td class="text-xs-center">
+            {{ new Date(props.item.date).toLocaleString() }}
+          </td>
           <td class="text-xs-center">
             <v-chip :color="statusColor(props.item.status)" text-color="white" small>
               {{ props.item.status }}
@@ -27,7 +29,7 @@
                 icon
                 color="green"
                 :disabled="disableNotPendings(props.item.status)"
-                @click="acceptInvitation(props.item)">
+                @click="acceptRequest(props.item)">
                 <v-icon>check</v-icon>
               </v-btn>
               <span>پذیرش</span>
@@ -42,7 +44,7 @@
                 icon
                 color="red"
                 :disabled="disableNotPendings(props.item.status)"
-                @click="rejectInvitation(props.item)">
+                @click="rejectRequest(props.item)">
                 <v-icon>close</v-icon>
               </v-btn>
               <span>رد</span>
@@ -61,22 +63,22 @@ import { mapState } from "vuex";
 export default {
   data: () => ({
     headers: [
-      { text: "فرستنده", value: "receiver", align: "center" },
-      { text: "نام تیم", value: "team_name", align: "center" },
+      { text: "تیم فرستنده", value: "sender_name", align: "center" },
+      { text: "تاریخ دریافت", value: "date", align: "center" },
       { text: "وضعیت", value: "status", align: "center" },
       { text: "عملیات", value: "receiver", sortable: false, align: "center" }
     ]
   }),
   computed: mapState({
     accessToken: state => state.accessToken,
-    receivedInvitations: state => state.userInfo.received_invitations
+    receivedGameRequests: state => state.teamInfo.received_game_requests
   }),
   methods: {
-    acceptInvitation(prop) {
+    acceptRequest(prop) {
       axios
         .post(
-          "api/team/accept/",
-          { id: prop.id },
+          "games/accept/",
+          { request_id: prop.id },
           {
             headers: {
               Authorization: `Bearer ${this.accessToken}`
@@ -85,7 +87,6 @@ export default {
         )
         .then(res => {
           // JIT update other components
-          this.$store.dispatch("getUserInfo");
           this.$store.dispatch("getTeamInfo");
 
           this.$store.dispatch("showSnackbar", {
@@ -102,11 +103,11 @@ export default {
           }
         });
     },
-    rejectInvitation(prop) {
+    rejectRequest(prop) {
       axios
         .post(
-          "api/team/reject/",
-          { id: prop.id },
+          "games/reject/",
+          { request_id: prop.id },
           {
             headers: {
               Authorization: `Bearer ${this.accessToken}`
@@ -115,7 +116,7 @@ export default {
         )
         .then(res => {
           // JIT update other components
-          this.$store.dispatch("getUserInfo");
+          this.$store.dispatch("getTeamInfo");
 
           this.$store.dispatch("showSnackbar", {
             text: res.data.message,
