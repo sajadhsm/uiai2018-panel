@@ -11,7 +11,9 @@
             <span>انتخاب تیم حریف:</span>
             <v-select
               v-model="teamID"
-              :items="teams"
+              :items="availableTeams"
+              item-text="name"
+              item-value="id"
               :rules="rules"
             />
           </v-form>
@@ -53,12 +55,13 @@ export default {
   data: () => ({
     requestGameDialog: false,
     valid: true,
-    teamID: 2,
-    teams: [1, 2],
-    teamName: "",
+    teamID: 0,
     rules: [v => !!v || "انتخاب تیم الزامی است"]
   }),
-  computed: mapState(["accessToken"]),
+  computed: mapState(["accessToken", "availableTeams"]),
+  created() {
+    this.$store.dispatch('getAvailableTeams');
+  },
   methods: {
     sendGameRequest() {
       if (this.$refs.requestGameForm.validate()) {
@@ -80,8 +83,7 @@ export default {
               color: "success"
             });
 
-            console.log(res);
-
+            this.$store.dispatch("getTeamInfo");
             this.requestGameDialog = false;
           })
           .catch(error => {

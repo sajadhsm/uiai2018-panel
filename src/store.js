@@ -14,6 +14,7 @@ export default new Vuex.Store({
     hasTeam: false,
     userInfo: {},
     teamInfo: {},
+    availableTeams: []
   },
   mutations: {
     SET_SNACKBAR_VISIBILITY(state, status) {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     SET_TEAM_INFO(state, info) {
       state.teamInfo = info;
+    },
+    SET_AVAILABLE_TEAMS(state, teams) {
+      state.availableTeams = teams;
     }
   },
   actions: {
@@ -108,6 +112,25 @@ export default new Vuex.Store({
             if (res.status === 200) {
               context.commit('SET_TEAM_INFO', res.data);
               context.commit('SET_HAS_TEAM', true);
+              resolve(res.data);
+            }
+          })
+          .catch(error => {
+            if (error.response) reject(error.response.data);
+          })
+      })
+    },
+    getAvailableTeams(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('api/get_available_teams/', {
+            headers: {
+              Authorization: `Bearer ${context.state.accessToken}`
+            }
+          })
+          .then(res => {
+            if (res.status === 200) {
+              context.commit('SET_AVAILABLE_TEAMS', res.data);
               resolve(res.data);
             }
           })
