@@ -2,7 +2,8 @@
   <v-container>
     <GameRequestForm class="mb-4" />
     <SentGameRequests class="mb-4" />
-    <ReceivedGameRequests />
+    <ReceivedGameRequests class="mb-4" />
+    <GamesTable />
   </v-container>
 </template>
 
@@ -10,12 +11,14 @@
 import GameRequestForm from "./GameRequestForm";
 import SentGameRequests from "./SentGameRequests";
 import ReceivedGameRequests from "./ReceivedGameRequests";
+import GamesTable from "./GamesTable";
 
 export default {
   components: {
     GameRequestForm,
     SentGameRequests,
-    ReceivedGameRequests
+    ReceivedGameRequests,
+    GamesTable
   },
 };
 </script>
