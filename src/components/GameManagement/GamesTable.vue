@@ -28,10 +28,8 @@
             {{ new Date(props.item.run_date).toLocaleString() }}
           </td>
           <td class="text-xs-center">
-            <!-- TODO: Find a way so vue-router lets the file to get downloaded -->
             <v-btn
-              :href="props.item.log_file"
-              download
+              @click="handleDownload(props.item)"
               flat
               small
               color="primary">دانلود</v-btn>
@@ -56,12 +54,30 @@ export default {
       { text: "تاریخ اجرا", value: "run_date", align: "center" },
       { text: "فایل لاگ", value: "log_file", align: "center" }
     ],
-    pagination: { sortBy: "run_date", descending: true, rowsPerPage: -1 },
+    pagination: { sortBy: "run_date", descending: true, rowsPerPage: -1 }
   }),
   computed: mapState({
     games: state => state.teamInfo.games
   }),
   methods: {
+    handleDownload(gameInfo) {
+      // Recive log file as base64
+      const text = window.atob(gameInfo.log_file);
+
+      const element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
+      );
+      element.setAttribute("download", `uiai_log_${gameInfo.id}.txt`);
+
+      element.style.display = "none";
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    },
     statusColor(statusText) {
       if (statusText === "پایان یافته") {
         return "green";
