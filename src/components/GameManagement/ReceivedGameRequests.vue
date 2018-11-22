@@ -12,6 +12,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.sender_id }}</td>
           <td class="text-xs-center">
+            {{ new Date(props.item.date).toLocaleString() }}
+          </td>
+          <td class="text-xs-center">
             <v-chip :color="statusColor(props.item.status)" text-color="white" small>
               {{ props.item.status }}
             </v-chip>
@@ -61,6 +64,7 @@ export default {
   data: () => ({
     headers: [
       { text: "تیم فرستنده", value: "sender_id", align: "center" },
+      { text: "تاریخ دریافت", value: "date", align: "center" },
       { text: "وضعیت", value: "status", align: "center" },
       { text: "عملیات", value: "receiver", sortable: false, align: "center" }
     ]
@@ -71,13 +75,10 @@ export default {
   }),
   methods: {
     acceptRequest(prop) {
-      console.log(prop)
-      return;
       axios
         .post(
           "games/accept/",
-          // TODO: BE WIP
-          { id: prop.id },
+          { request_id: prop.id },
           {
             headers: {
               Authorization: `Bearer ${this.accessToken}`
@@ -103,13 +104,10 @@ export default {
         });
     },
     rejectRequest(prop) {
-      console.log(prop);
-      return;
-      // TODO: BE WIP
       axios
         .post(
           "games/reject/",
-          { id: prop.id },
+          { request_id: prop.id },
           {
             headers: {
               Authorization: `Bearer ${this.accessToken}`

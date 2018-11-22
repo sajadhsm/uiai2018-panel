@@ -12,6 +12,9 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.receiver_id }}</td>
           <td class="text-xs-center">
+            {{ new Date(props.item.date).toLocaleString() }}
+          </td>
+          <td class="text-xs-center">
             <v-chip :color="statusColor(props.item.status)" text-color="white" small>
               {{ props.item.status }}
             </v-chip>
@@ -30,6 +33,7 @@ export default {
   data: () => ({
     headers: [
       { text: "دریافت‌کننده", value: "receiver_id", align: "center" },
+      { text: "تاریخ ارسال", value: "date", align: "center" },
       { text: "وضعیت", value: "status", align: "center" }
     ]
   }),
