@@ -10,7 +10,7 @@
         hide-actions
       >
         <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.sender_id }}</td>
+          <td class="text-xs-center">{{ props.item.sender_name }}</td>
           <td class="text-xs-center">
             {{ new Date(props.item.date).toLocaleString() }}
           </td>
@@ -63,7 +63,7 @@ import { mapState } from "vuex";
 export default {
   data: () => ({
     headers: [
-      { text: "تیم فرستنده", value: "sender_id", align: "center" },
+      { text: "تیم فرستنده", value: "sender_name", align: "center" },
       { text: "تاریخ دریافت", value: "date", align: "center" },
       { text: "وضعیت", value: "status", align: "center" },
       { text: "عملیات", value: "receiver", sortable: false, align: "center" }
