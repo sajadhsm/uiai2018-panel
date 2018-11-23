@@ -9,8 +9,9 @@
         <v-card-text>
           <v-form color="primary" ref="requestGameForm" v-model="valid">
             <span>انتخاب تیم حریف:</span>
-            <v-select
+            <v-autocomplete
               v-model="teamID"
+              placeholder="نام تیم حریف"
               :items="availableTeams"
               item-text="name"
               item-value="id"
