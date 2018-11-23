@@ -3,6 +3,15 @@
     <v-flex class="elevation-1">
       <v-toolbar dark flat color="primary">
         <v-toolbar-title>لیست بازی‌ها</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn
+          flat
+          icon
+          right
+          :loading="gamesUpdateLoading"
+          @click="handleGamesUpdate">
+          <v-icon>cached</v-icon>
+        </v-btn>
       </v-toolbar>
       <v-data-table
         :headers="headers"
@@ -45,6 +54,7 @@ import { mapState } from "vuex";
 
 export default {
   data: () => ({
+    gamesUpdateLoading: false,
     headers: [
       { text: "تیم اول", value: "team1_name", align: "center" },
       { text: "گل‌های تیم اول", value: "team1_goals", align: "center" },
@@ -60,6 +70,12 @@ export default {
     games: state => state.teamInfo.games
   }),
   methods: {
+    handleGamesUpdate() {
+      this.gamesUpdateLoading = true;
+      this.$store.dispatch("getTeamInfo").then(() => {
+        setTimeout(() => (this.gamesUpdateLoading = false), 500);
+      });
+    },
     handleDownload(gameInfo) {
       // Recive log file as base64
       const text = window.atob(gameInfo.log_file);
