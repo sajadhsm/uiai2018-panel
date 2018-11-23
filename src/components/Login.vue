@@ -4,12 +4,15 @@
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md4>
           <v-card class="elevation-12">
-            <v-toolbar dark color="primary">
+            <v-toolbar dark flat color="primary">
               <v-toolbar-title>ورود به داشبورد</v-toolbar-title>
             </v-toolbar>
 
             <v-card-text>
-              <v-form ref="form" v-model="valid">
+              <v-form
+                ref="form"
+                v-model="valid"
+                @keyup.native.enter.prevent="valid && submit()">
                 <v-text-field
                   v-model="email"
                   :rules="emailRules"
