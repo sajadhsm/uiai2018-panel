@@ -42,7 +42,7 @@
             </v-radio-group>
           </td>
           <td class="text-xs-center">
-            {{ new Date(props.item.upload_time).toLocaleString() }}
+            {{ props.item.upload_time | faDate }}
           </td>
           <td class="text-xs-center">{{ props.item.language }}</td>
           <td class="text-xs-center">

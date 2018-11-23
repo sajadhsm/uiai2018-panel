@@ -25,7 +25,7 @@
             </v-chip>
           </td>
           <td class="text-xs-center">
-            {{ new Date(props.item.run_date).toLocaleString() }}
+            {{ props.item.run_date | faDate }}
           </td>
           <td class="text-xs-center">
             <v-btn

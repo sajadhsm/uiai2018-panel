@@ -12,7 +12,7 @@
         <template slot="items" slot-scope="props">
           <td class="text-xs-center">{{ props.item.receiver_name }}</td>
           <td class="text-xs-center">
-            {{ new Date(props.item.date).toLocaleString() }}
+            {{ props.item.date | faDate }}
           </td>
           <td class="text-xs-center">
             <v-chip :color="statusColor(props.item.status)" text-color="white" small>
