@@ -45,6 +45,10 @@
         </v-card-text>
 
         <v-card-actions>
+          <p>
+            <v-icon color="orange" size="20">error_outline</v-icon>
+            فایل‌های کلاینت باید مستقیماً در ریشه فایل زیپ قرار بگیرند.
+          </p>
           <v-spacer></v-spacer>
           <v-btn
             :disabled="!file"
