@@ -46,12 +46,33 @@
           </td>
           <td class="text-xs-center">{{ props.item.language }}</td>
           <td class="text-xs-center">
-            <v-chip :color="statusColor(props.item.compile_status)" text-color="white" small>
+            <v-chip
+              :color="statusColor(props.item.compile_status)"
+              @click="showCompileStatusDialog(props.item)"
+              text-color="white"
+              small>
               {{ props.item.compile_status }}
             </v-chip>
           </td>
         </template>
       </v-data-table>
+      <v-dialog v-model="compileStatusTextModal" max-width="600px">
+        <v-card>
+          <v-card-title>
+            <b>اطلاعات وضعیت کامپایل</b>
+          </v-card-title>
+          <v-card-text>
+            {{ compileStatusText || 'در حال کامپایل' }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              flat
+              @click.native="compileStatusTextModal = false">بستن</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-flex>
   </v-layout>
 </template>
@@ -62,6 +83,8 @@ import { mapState } from "vuex";
 
 export default {
   data: () => ({
+    compileStatusTextModal: false,
+    compileStatusText: "",
     headers: [
       { text: "کد نهایی", align: "right", sortable: false },
       { text: "تاریخ ارسال", value: "upload_time", align: "center" },
@@ -121,6 +144,10 @@ export default {
             });
           }
         });
+    },
+    showCompileStatusDialog(row) {
+      this.compileStatusTextModal = true;
+      this.compileStatusText = row.compile_status_text;
     },
     statusColor(statusText) {
       if (statusText === "کامپایل موفق") {
