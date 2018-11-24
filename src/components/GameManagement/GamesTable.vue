@@ -38,6 +38,13 @@
           </td>
           <td class="text-xs-center">
             <v-btn
+              :href="`http://acm.ui.ac.ir/uiai2018/log_player/?game_id=${props.item.id}&token=${props.item.token}`"
+              flat
+              small
+              color="primary">نمایش</v-btn>
+          </td>
+          <td class="text-xs-center">
+            <v-btn
               @click="handleDownload(props.item)"
               flat
               small
@@ -62,6 +69,7 @@ export default {
       { text: "تیم دوم", value: "team2_name", align: "center" },
       { text: "وضعیت", value: "status", align: "center" },
       { text: "تاریخ اجرا", value: "run_date", align: "center" },
+      { text: "نمایش بازی", value: "token", align: "center" },
       { text: "فایل لاگ", value: "log_file", align: "center" }
     ],
     pagination: { sortBy: "run_date", descending: true, rowsPerPage: -1 }
