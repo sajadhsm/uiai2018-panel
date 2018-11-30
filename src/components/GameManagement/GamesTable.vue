@@ -47,9 +47,7 @@
           </td>
           <td class="text-xs-center">
             <v-btn
-              v-if="
-                props.item.status === 'پایان یافته' |
-                props.item.status === 'خطا در اجرای بازی'"
+              v-if="props.item.status === 'پایان یافته'"
               @click="handleDownload(props.item)"
               flat
               small
