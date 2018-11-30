@@ -38,17 +38,23 @@
           </td>
           <td class="text-xs-center">
             <v-btn
+              v-if="props.item.status === 'پایان یافته'"
               :href="`http://acm.ui.ac.ir/uiai2018/log_player/?game_id=${props.item.id}&token=${props.item.token}`"
               flat
               small
               color="primary">نمایش</v-btn>
+            <span v-else>-</span>
           </td>
           <td class="text-xs-center">
             <v-btn
+              v-if="
+                props.item.status === 'پایان یافته' |
+                props.item.status === 'خطا در اجرای بازی'"
               @click="handleDownload(props.item)"
               flat
               small
               color="primary">دانلود</v-btn>
+            <span v-else>-</span>
           </td>
         </template>
       </v-data-table>
