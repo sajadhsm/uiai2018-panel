@@ -91,14 +91,19 @@ export default {
             Authorization: `Bearer ${this.accessToken}`
           }
         })
-        .then(res => {
-          this.$store.dispatch("showSnackbar", {
-            text: res.data.message,
-            color: "success"
-          });
-          // Update uploadedCodes table table
-          this.$store.dispatch("getTeamInfo");
-          this.file = null;
+        .then(() => {
+          // Request keeps being pending by the server
+          // so we do nothing here and show the success message
+          // right after form submition
+          // But the catch block may do its job currectly :D
+
+          // this.$store.dispatch("showSnackbar", {
+          //   text: res.data.message,
+          //   color: "success"
+          // });
+          // // Update uploadedCodes table table
+          // this.$store.dispatch("getTeamInfo");
+          // this.file = null;
         })
         .catch(error => {
           this.$store.dispatch("showSnackbar", {
@@ -106,6 +111,18 @@ export default {
             color: "error"
           });
         });
+
+      // Explained on line 95
+      // Force success message and file input clearing
+      setTimeout(() => {
+        this.$store.dispatch("showSnackbar", {
+          text: 'کد شما با موفقیت آپلود شد.',
+          color: "success"
+        });
+        // Update uploadedCodes table table
+        this.$store.dispatch("getTeamInfo");
+        this.file = null;
+      }, 0);
     }
   }
 };
