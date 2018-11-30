@@ -3,6 +3,15 @@
     <v-flex class="elevation-1">
       <v-toolbar dark flat color="primary">
         <v-toolbar-title>کد‌های ارسال شده</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn
+          flat
+          icon
+          right
+          :loading="codesUpdateLoading"
+          @click="handleCodesUpdate">
+          <v-icon>cached</v-icon>
+        </v-btn>
       </v-toolbar>
 
       <v-data-table
@@ -83,6 +92,7 @@ import { mapState } from "vuex";
 
 export default {
   data: () => ({
+    codesUpdateLoading: false,
     compileStatusTextModal: false,
     compileStatusText: "",
     headers: [
@@ -144,6 +154,12 @@ export default {
             });
           }
         });
+    },
+    handleCodesUpdate() {
+      this.codesUpdateLoading = true;
+      this.$store.dispatch("getTeamInfo").then(() => {
+        setTimeout(() => (this.codesUpdateLoading = false), 500);
+      });
     },
     showCompileStatusDialog(row) {
       this.compileStatusTextModal = true;
