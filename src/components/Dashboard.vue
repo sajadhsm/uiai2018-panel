@@ -28,6 +28,15 @@
             <v-list-tile-title>بازی دوستانه</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-list-tile :to="{name: 'QualificationGames'}">
+          <v-list-tile-action>
+            <v-icon>verified_user</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>بازی‌های انتخابی</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
