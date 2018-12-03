@@ -79,7 +79,7 @@ export default {
     pagination: { sortBy: "run_date", descending: true, rowsPerPage: -1 }
   }),
   computed: mapState({
-    games: state => state.teamInfo.games
+    games: state => state.teamInfo.games.filter(game => game.type === "دوستانه")
   }),
   methods: {
     handleGamesUpdate() {
