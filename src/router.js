@@ -46,7 +46,10 @@ const router = new Router({
         {
           path: '/payment',
           name: 'Payment',
-          component: Payment
+          component: Payment,
+          beforeEnter: (to, from, next) => {
+            if (store.state.teamInfo.qualified) next();
+          }
         }
       ]
     },

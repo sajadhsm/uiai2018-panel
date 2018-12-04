@@ -38,12 +38,12 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile :to="{name: 'Payment'}">
+        <v-list-tile v-if="teamInfo.qualified" :to="{name: 'Payment'}">
           <v-list-tile-action>
             <v-icon>payment</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>پرداخت</v-list-tile-title>
+            <v-list-tile-title>پرداخت و اسکان</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -61,21 +61,23 @@
     </v-toolbar>
 
     <v-content>
-      <router-view />
+      <router-view/>
     </v-content>
 
-    <GlobalSnackbar />
+    <GlobalSnackbar/>
   </v-app>
 </template>
 
 <script>
 import Snackbar from "./Snackbar";
+import { mapState } from "vuex";
 
 export default {
   components: {
     GlobalSnackbar: Snackbar
   },
   data: () => ({ drawer: true }),
+  computed: mapState(['teamInfo']),
   methods: {
     logout() {
       localStorage.removeItem("access");
