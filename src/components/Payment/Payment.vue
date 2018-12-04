@@ -1,18 +1,24 @@
 <template>
   <v-container>
-    <Pay class="mb-4" />
-    <HostelRequest />
+    <PaymentInfo v-if="teamInfo.payment.verified" :paymentInfo="teamInfo.payment" class="mb-4"/>
+    <Pay v-else class="mb-4"/>
+    <HostelRequest/>
   </v-container>
 </template>
 
 <script>
 import Pay from "./Pay";
+import PaymentInfo from "./PaymentInfo";
 import HostelRequest from "./HostelRequest";
+
+import { mapState } from "vuex";
 
 export default {
   components: {
     Pay,
-    HostelRequest,
-  }
+    PaymentInfo,
+    HostelRequest
+  },
+  computed: mapState(["teamInfo"])
 };
 </script>
