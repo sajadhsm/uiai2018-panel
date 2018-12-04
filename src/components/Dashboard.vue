@@ -38,6 +38,15 @@
           </v-list-tile-content>
         </v-list-tile>
 
+        <v-list-tile :to="{name: 'QualificationStanding'}">
+          <v-list-tile-action>
+            <v-icon>equalizer</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>رده‌بندی مرحله غیرحضوری</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
         <v-list-tile v-if="teamInfo.qualified" :to="{name: 'Payment'}">
           <v-list-tile-action>
             <v-icon>payment</v-icon>

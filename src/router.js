@@ -8,6 +8,7 @@ import TeamManagement from './views/TeamManagement.vue';
 import SourceCodeManagement from './views/SourceCodeManagement.vue';
 import GameManagement from './views/GameManagement.vue';
 import QualificationGames from './views/QualificationGames.vue';
+import QualificationStanding from './views/QualificationStanding.vue';
 import Payment from './views/Payment.vue';
 
 Vue.use(Router)
@@ -42,6 +43,11 @@ const router = new Router({
           path: '/qualification',
           name: 'QualificationGames',
           component: QualificationGames
+        },
+        {
+          path: '/qualification-standing',
+          name: 'QualificationStanding',
+          component: QualificationStanding
         },
         {
           path: '/payment',

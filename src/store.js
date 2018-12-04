@@ -14,7 +14,8 @@ export default new Vuex.Store({
     hasTeam: false,
     userInfo: {},
     teamInfo: {},
-    availableTeams: []
+    availableTeams: [],
+    qualificationStanding: []
   },
   mutations: {
     SET_SNACKBAR_VISIBILITY(state, status) {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
     },
     SET_AVAILABLE_TEAMS(state, teams) {
       state.availableTeams = teams;
+    },
+    SET_QUALIFICATION_STANDING(state, teams) {
+      state.qualificationStanding = teams;
     }
   },
   actions: {
@@ -132,6 +136,21 @@ export default new Vuex.Store({
             if (res.status === 200) {
               context.commit('SET_AVAILABLE_TEAMS', res.data);
               resolve(res.data);
+            }
+          })
+          .catch(error => {
+            if (error.response) reject(error.response.data);
+          })
+      })
+    },
+    getQualificationStanding(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('games/qualifications/standings/')
+          .then(res => {
+            if (res.status === 200) {
+              context.commit('SET_QUALIFICATION_STANDING', res.data.standings);
+              resolve(res.data.standings);
             }
           })
           .catch(error => {
