@@ -37,6 +37,15 @@
             <v-list-tile-title>بازی‌های انتخابی</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-list-tile :to="{name: 'Payment'}">
+          <v-list-tile-action>
+            <v-icon>payment</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>پرداخت</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
