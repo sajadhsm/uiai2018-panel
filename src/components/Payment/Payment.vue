@@ -2,7 +2,9 @@
   <v-container>
     <PaymentInfo v-if="teamInfo.payment.verified" :paymentInfo="teamInfo.payment" class="mb-4"/>
     <Pay v-else class="mb-4"/>
-    <HostelRequest/>
+
+    <HostelRequested v-if="userInfo.wants_dorm"/>
+    <HostelRequest v-else/>
   </v-container>
 </template>
 
@@ -10,6 +12,7 @@
 import Pay from "./Pay";
 import PaymentInfo from "./PaymentInfo";
 import HostelRequest from "./HostelRequest";
+import HostelRequested from "./HostelRequested";
 
 import { mapState } from "vuex";
 
@@ -17,8 +20,9 @@ export default {
   components: {
     Pay,
     PaymentInfo,
-    HostelRequest
+    HostelRequest,
+    HostelRequested
   },
-  computed: mapState(["teamInfo"])
+  computed: mapState(["teamInfo", "userInfo"])
 };
 </script>
