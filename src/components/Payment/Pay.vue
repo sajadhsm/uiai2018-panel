@@ -10,13 +10,28 @@
         </v-card-title>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            dark
-            outline
-            :loading="redirectBtnLoading"
-            @click="handlePaymentRedirect"
-          >پرداخت از طریق درگاه آنلاین</v-btn>
+          <v-container fluid text-xs-left class="pa-0">
+            <v-layout align-end wrap justify-end class="pa-0">
+              <v-flex class="pb-2 pr-2">
+                <v-text-field
+                  v-model="discountCode"
+                  label="کد تخفیف"
+                  color="white"
+                  style="max-width: 325px;"
+                  hide-details
+                />
+              </v-flex>
+
+              <v-flex>
+                <v-btn
+                  dark
+                  outline
+                  :loading="redirectBtnLoading"
+                  @click="handlePaymentRedirect"
+                >پرداخت از طریق درگاه آنلاین</v-btn>
+              </v-flex>
+            </v-layout>
+          </v-container>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -29,6 +44,7 @@ import { mapState } from "vuex";
 
 export default {
   data: () => ({
+    discountCode: "",
     redirectBtnLoading: false
   }),
   computed: mapState(["accessToken"]),
@@ -39,7 +55,9 @@ export default {
       axios
         .post(
           "api/payment/begin/",
-          {},
+          {
+            discount_code: this.discountCode
+          },
           {
             headers: {
               Authorization: `Bearer ${this.accessToken}`
@@ -48,7 +66,6 @@ export default {
         )
         .then(res => {
           window.location.href = res.data.redirect_url;
-          this.redirectBtnLoading = false;
         })
         .catch(error => {
           if (error.response) {
