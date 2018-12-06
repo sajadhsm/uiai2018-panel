@@ -73,6 +73,11 @@ export default {
   computed: mapState({
     games: state => state.teamInfo.games.filter(game => game.type === "نهایی")
   }),
+  created() {
+    // Just for a network delay bug
+    // Maybe this fix it?
+    this.$store.dispatch("getTeamInfo");
+  },
   methods: {
     handleGamesUpdate() {
       this.gamesUpdateLoading = true;
