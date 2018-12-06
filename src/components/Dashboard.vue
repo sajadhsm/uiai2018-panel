@@ -56,6 +56,15 @@
           </v-list-tile-content>
         </v-list-tile>
 
+        <v-list-tile href="http://acm.ui.ac.ir/uiai2018/finals/">
+          <v-list-tile-action>
+            <v-icon>star</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>جدول مرحله نهایی</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
         <v-list-tile v-if="teamInfo.qualified" :to="{name: 'Payment'}">
           <v-list-tile-action>
             <v-icon>payment</v-icon>
